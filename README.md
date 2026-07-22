@@ -1,2 +1,809 @@
-# dhanavanshi-emobility
-disscount offer for customers
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHANAVANSHI - 3D Discount Generator</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Arial', sans-serif; 
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        
+        .background-3d { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1b2e 100%);
+            z-index: -1;
+        }
+        
+        canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1;
+        }
+        
+        .logo-section {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.3));
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00ff88 0%, #00ffff 50%, #0088ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .logo-sub {
+            font-size: 12px;
+            color: #00ffff;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            animation: glow 2.5s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 255, 200, 0.4)); }
+            50% { filter: drop-shadow(0 0 25px rgba(0, 255, 200, 0.8)); }
+        }
+        
+        .container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .form-card {
+            background: rgba(20, 30, 60, 0.7);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 255, 200, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(0, 255, 200, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
+        }
+        
+        .form-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .form-subtitle {
+            text-align: center;
+            color: #00ff88;
+            font-size: 12px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 12px;
+            color: #00ffff;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 255, 200, 0.05);
+            border: 1.5px solid rgba(0, 255, 200, 0.3);
+            border-radius: 10px;
+            color: #00ffff;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        input::placeholder {
+            color: rgba(0, 255, 200, 0.4);
+        }
+        
+        input:focus {
+            outline: none;
+            background: rgba(0, 255, 200, 0.1);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.3), inset 0 0 10px rgba(0, 255, 136, 0.1);
+        }
+        
+        .button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #00ff88 0%, #00ffff 100%);
+            color: #0a0e27;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+            text-transform: uppercase;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 255, 200, 0.8);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .history-section {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(20, 30, 60, 0.7);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 255, 200, 0.3);
+            border-radius: 10px;
+            padding: 8px;
+            max-width: 160px;
+            max-height: 180px;
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.2);
+        }
+        
+        .history-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .password-section {
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(0, 255, 200, 0.2);
+        }
+        
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .password-input-wrapper input {
+            flex: 1;
+            padding: 4px 6px;
+            font-size: 9px;
+        }
+        
+        .toggle-password {
+            background: rgba(0, 255, 200, 0.1);
+            border: 1px solid rgba(0, 255, 200, 0.3);
+            color: #00ffff;
+            padding: 4px 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        
+        .toggle-password:hover {
+            background: rgba(0, 255, 200, 0.2);
+        }
+        
+        .history-list {
+            max-height: 110px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            background: rgba(0, 255, 200, 0.05);
+            padding: 5px 6px;
+            border-radius: 5px;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 2px solid #00ff88;
+            font-size: 8px;
+        }
+        
+        .history-name {
+            color: #00ffff;
+            font-weight: 600;
+            font-size: 8px;
+        }
+        
+        .history-mobile {
+            color: rgba(0, 255, 200, 0.6);
+            font-size: 7px;
+        }
+        
+        .history-discount {
+            color: #00ff88;
+            font-weight: 700;
+            font-size: 8px;
+        }
+        
+        .free-badge {
+            background: rgba(255, 200, 0, 0.2);
+            color: #ffff00;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 7px;
+            font-weight: 700;
+        }
+        
+        .counter-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(20, 30, 60, 0.7);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 255, 200, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.2);
+        }
+        
+        .counter-label {
+            font-size: 8px;
+            color: #00ffff;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+        
+        .counter-number {
+            font-size: 18px;
+            font-weight: 900;
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+        
+        .counter-sub {
+            font-size: 7px;
+            color: rgba(0, 255, 200, 0.6);
+            margin-top: 2px;
+        }
+        
+        .popup-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            z-index: 1000;
+            animation: popupBurst 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        
+        .popup-success {
+            background: rgba(50, 200, 50, 0.9);
+            box-shadow: 0 0 50px rgba(50, 200, 50, 0.8);
+            border: 3px solid rgba(100, 255, 100, 0.6);
+        }
+        
+        .popup-error {
+            background: rgba(255, 50, 50, 0.9);
+            box-shadow: 0 0 50px rgba(255, 50, 50, 0.8);
+            border: 3px solid rgba(255, 150, 150, 0.6);
+        }
+        
+        .popup-warning {
+            background: rgba(255, 150, 0, 0.9);
+            box-shadow: 0 0 50px rgba(255, 150, 0, 0.8);
+            border: 3px solid rgba(255, 200, 100, 0.6);
+        }
+        
+        @keyframes popupBurst {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+        }
+        
+        .popup-fade {
+            animation: fadeOut 0.5s ease-out forwards;
+            animation-delay: 2.5s;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 255, 200, 0.1);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 200, 0.4);
+            border-radius: 10px;
+        }
+        
+        .non-rto-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(0,255,136,0.15) 0%, rgba(0,255,255,0.15) 50%, rgba(0,136,255,0.15) 100%);
+            border-top: 2px solid rgba(0,255,200,0.4);
+            color: #00ffff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-align: center;
+            padding: 10px 0;
+            z-index: 200;
+            text-transform: uppercase;
+            animation: bannerGlow 2s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes bannerGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,255,200,0.3), 0 -3px 15px rgba(0,255,136,0.2); color: #00ffff; }
+            50% { box-shadow: 0 0 25px rgba(0,255,200,0.7), 0 -5px 25px rgba(0,255,136,0.5); color: #00ff88; }
+        }
+        
+        @media (max-width: 768px) {
+            .form-card { 
+                padding: 30px 20px; 
+            }
+            .history-section { 
+                max-width: 280px; 
+            }
+            .logo-text { 
+                font-size: 20px; 
+            }
+            .non-rto-banner {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="background-3d"></div>
+    
+    <div class="logo-section">
+        <div class="logo-text">⚡ DHANAVANSHI ⚡</div>
+        <div class="logo-sub">E-MOBILITY DISCOUNT</div>
+    </div>
+    
+    <div class="container">
+        <div class="form-card">
+            <div class="form-title">💝 DISCOUNT</div>
+            <div class="form-subtitle">APNA NAAM AUR MOBILE DAALO</div>
+            
+            <div class="form-group">
+                <label for="name">AAPKA NAAM</label>
+                <input type="text" id="name" placeholder="Jaise: Rahul" oninput="processInput()" />
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile">MOBILE NUMBER</label>
+                <input type="tel" id="mobile" placeholder="10 DIGIT" maxlength="10" oninput="processInput()" />
+            </div>
+            
+            <div class="form-group">
+                <label for="model">MODEL SELECT KARO</label>
+                <select id="model" onchange="updateModelPrice()" style="width:100%;padding:12px 16px;background:rgba(0,255,200,0.05);border:1.5px solid rgba(0,255,200,0.3);border-radius:10px;color:#00ffff;font-size:14px;transition:all 0.3s;font-weight:500;cursor:pointer;appearance:none;-webkit-appearance:none;">
+                    <option value="" style="background:#0a0e27;color:#00ffff;">-- MODEL CHUNO --</option>
+                    <option value="single_light" data-price="50000" style="background:#0a0e27;color:#00ffff;">Single Light - ₹50,000</option>
+                    <option value="dual_light" data-price="60000" style="background:#0a0e27;color:#00ffff;">Dual Light - ₹60,000</option>
+                    <option value="scooter" data-price="60000" style="background:#0a0e27;color:#00ffff;">Scooter - ₹60,000</option>
+                    <option value="activa" data-price="70000" style="background:#0a0e27;color:#00ffff;">Activa - ₹70,000</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="priceGroup" style="display:none;">
+                <label for="modelPrice">MODEL PRICE</label>
+                <input type="text" id="modelPrice" readonly style="width:100%;padding:12px 16px;background:rgba(0,255,200,0.03);border:1.5px solid rgba(0,255,200,0.2);border-radius:10px;color:#00ff88;font-size:16px;font-weight:700;cursor:not-allowed;" />
+            </div>
+            
+            <button class="button" onclick="processInput()">DISCOUNT NIKALO!</button>
+        </div>
+    </div>
+    
+    <div class="non-rto-banner">
+        ⚡ NON-RTO MODELS &nbsp;|&nbsp; ⚡ NON-RTO MODELS &nbsp;|&nbsp; ⚡ NON-RTO MODELS
+    </div>
+    
+    <div class="history-section">
+        <div class="history-title">📋 CUSTOMERS</div>
+        
+        <div class="password-section">
+            <div style="font-size: 11px; color: rgba(0, 255, 200, 0.6); margin-bottom: 8px;">Password Protected</div>
+            <div class="password-input-wrapper">
+                <input type="password" id="passwordInput" placeholder="Password" />
+                <button class="toggle-password" onclick="togglePassword()">Show</button>
+            </div>
+        </div>
+        
+        <div id="historyListContainer" style="display: none;">
+            <div class="history-list" id="historyList">
+                <div style="color: rgba(0, 255, 200, 0.5); font-size: 11px; text-align: center; padding: 20px 0;">
+                    ABHI KOI NAHI
+                </div>
+            </div>
+        </div>
+        
+        <div id="lockedMessage" style="color: rgba(0, 255, 200, 0.5); font-size: 11px; text-align: center; padding: 20px 0;">
+            🔒 PASSWORD DAALO
+        </div>
+    </div>
+    
+    <div class="counter-box">
+        <div class="counter-label">TOTAL REGISTER</div>
+        <div class="counter-number" id="totalCount">0</div>
+        <div class="counter-sub">/ 5000+</div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        let scene, camera, renderer, particles = [];
+        const CORRECT_PASSWORD = 'DHANA7878';
+        
+        function init3D() {
+            const canvas = document.getElementById('canvas');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            scene = new THREE.Scene();
+            scene.background = null;
+            
+            camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 50;
+            
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            const light1 = new THREE.PointLight(0x00ff88, 1, 200);
+            light1.position.set(50, 50, 50);
+            scene.add(light1);
+            
+            const light2 = new THREE.PointLight(0x00ffff, 0.8, 200);
+            light2.position.set(-50, -50, 50);
+            scene.add(light2);
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+            
+            createParticles();
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        function createParticles() {
+            const geometry = new THREE.BufferGeometry();
+            const count = 100;
+            const positions = new Float32Array(count * 3);
+            
+            for (let i = 0; i < count * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 200;
+                positions[i + 1] = (Math.random() - 0.5) * 200;
+                positions[i + 2] = (Math.random() - 0.5) * 200;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const material = new THREE.PointsMaterial({
+                color: 0x00ff88,
+                size: 2,
+                sizeAttenuation: true,
+            });
+            
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+            
+            particles.push(points);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            particles.forEach(particle => {
+                particle.rotation.x += 0.0002;
+                particle.rotation.y += 0.0003;
+            });
+            
+            renderer.render(scene, camera);
+        }
+        
+        function showPopup(text, type = 'success') {
+            const existing = document.querySelector('.popup-notification');
+            if (existing) existing.remove();
+            
+            const popup = document.createElement('div');
+            popup.className = `popup-notification popup-${type}`;
+            popup.innerHTML = text;
+            document.body.appendChild(popup);
+            
+            setTimeout(() => {
+                popup.classList.add('popup-fade');
+                setTimeout(() => popup.remove(), 500);
+            }, 2500);
+        }
+        
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const button = event.target;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                button.textContent = 'Show';
+            }
+        }
+        
+        document.getElementById('passwordInput').addEventListener('keyup', checkPassword);
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            const historyContainer = document.getElementById('historyListContainer');
+            const lockedMessage = document.getElementById('lockedMessage');
+            
+            if (input === CORRECT_PASSWORD) {
+                historyContainer.style.display = 'block';
+                lockedMessage.style.display = 'none';
+                updateHistory();
+            } else {
+                historyContainer.style.display = 'none';
+                lockedMessage.style.display = 'block';
+            }
+        }
+        
+        // ========== FIREBASE CONFIG ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPqasNshKzETEoxTYw_vkbwVigYG_LQkU",
+            authDomain: "dhanavanshi-e-mobility.firebaseapp.com",
+            projectId: "dhanavanshi-e-mobility",
+            storageBucket: "dhanavanshi-e-mobility.firebasestorage.app",
+            messagingSenderId: "106159842890",
+            appId: "1:106159842890:web:683ac3ae5e4577aef128b3",
+            measurementId: "G-H3Y2E0PV7L"
+        };
+        // Firebase will be initialized via CDN scripts
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const firestore = firebase.firestore();
+        // ======================================
+
+        async function initDB() {
+            // Firebase auto-ready
+        }
+
+        async function getAllCustomers() {
+            try {
+                const snapshot = await firestore.collection('customers').get();
+                return snapshot.docs.map(d => d.data());
+            } catch (e) {
+                console.error('getAllCustomers error:', e);
+                return [];
+            }
+        }
+
+        async function getCustomerByMobile(mobile) {
+            try {
+                const snap = await firestore.collection('customers').doc(mobile).get();
+                return snap.exists ? snap.data() : null;
+            } catch (e) {
+                console.error('getCustomerByMobile error:', e);
+                return null;
+            }
+        }
+
+        async function saveCustomer(mobile, data) {
+            try {
+                await firestore.collection('customers').doc(mobile).set(data);
+                return true;
+            } catch (e) {
+                console.error('saveCustomer error:', e);
+                return false;
+            }
+        }
+        
+        // Model prices and discount ranges
+        const MODEL_DATA = {
+            single_light: { name: 'Single Light', price: 50000, minDiscount: 500, maxDiscount: 1100 },
+            dual_light:   { name: 'Dual Light',   price: 60000, minDiscount: 500, maxDiscount: 1100 },
+            scooter:      { name: 'Scooter',       price: 60000, minDiscount: 500, maxDiscount: 1200 },
+            activa:       { name: 'Activa',        price: 70000, minDiscount: 800, maxDiscount: 1500 }
+        };
+        
+        function updateModelPrice() {
+            const modelSelect = document.getElementById('model');
+            const priceGroup = document.getElementById('priceGroup');
+            const priceInput = document.getElementById('modelPrice');
+            const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+            
+            if (modelSelect.value && MODEL_DATA[modelSelect.value]) {
+                const price = MODEL_DATA[modelSelect.value].price;
+                priceInput.value = '₹' + price.toLocaleString('en-IN');
+                priceGroup.style.display = 'block';
+            } else {
+                priceGroup.style.display = 'none';
+                priceInput.value = '';
+            }
+        }
+        
+        function generateRandomDiscount(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        async function processInput() {
+            const name = document.getElementById('name').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const modelKey = document.getElementById('model').value;
+            
+            // Check if name is valid
+            if (!name || name.length < 2) {
+                return;
+            }
+            
+            // Check if mobile is empty
+            if (!mobile) {
+                return;
+            }
+            
+            // Check if mobile is exactly 10 digits
+            if (mobile.length !== 10) {
+                showPopup('❌ INVALID MOBILE NUMBER<br>10 DIGIT HONA CHAHIYE!', 'warning');
+                return;
+            }
+            
+            // Check if mobile contains only digits
+            if (!/^\d{10}$/.test(mobile)) {
+                showPopup('❌ INVALID MOBILE NUMBER<br>SIRF NUMBERS DAALO!', 'warning');
+                return;
+            }
+            
+            // Check if model is selected
+            if (!modelKey || !MODEL_DATA[modelKey]) {
+                showPopup('❌ INVALID DETAILS<br>MODEL SAHI SE CHUNO!', 'warning');
+                return;
+            }
+            
+            const modelInfo = MODEL_DATA[modelKey];
+            
+            const existing = await getCustomerByMobile(mobile);
+            
+            if (existing) {
+                if (existing.modelKey && existing.modelKey !== modelKey) {
+                    showPopup('❌ WRONG DETAILS!<br>YEH NUMBER PEHLE SE<br>ALAG MODEL SE REGISTERED HAI!', 'error');
+                    return;
+                }
+                const priceText = existing.modelPrice ? ' - ₹' + existing.modelPrice.toLocaleString('en-IN') : '';
+                const modelText = existing.modelName ? existing.modelName + priceText + '<br>' : '';
+                showPopup(`<strong>${existing.name}</strong><br>${modelText}NE ₹${existing.discount} DISCOUNT NIKALA!`, 'error');
+                return;
+            }
+            
+            const discount = generateRandomDiscount(modelInfo.minDiscount, modelInfo.maxDiscount);
+            
+            const customerData = { 
+                name, 
+                mobile,
+                modelKey,
+                modelName: modelInfo.name,
+                modelPrice: modelInfo.price,
+                discount, 
+                registeredAt: new Date().toISOString() 
+            };
+            
+            await saveCustomer(mobile, customerData);
+            
+            showPopup(`🎉 ${name}<br>${modelInfo.name} - ₹${modelInfo.price.toLocaleString('en-IN')}<br>💰 ₹${discount} DISCOUNT MILA!`, 'success');
+            
+            document.getElementById('name').value = '';
+            document.getElementById('mobile').value = '';
+            document.getElementById('model').value = '';
+            document.getElementById('priceGroup').style.display = 'none';
+            document.getElementById('modelPrice').value = '';
+            
+            await updateHistory();
+        }
+        
+        async function updateHistory() {
+            const historyContainer = document.getElementById('historyListContainer');
+            if (historyContainer.style.display === 'none') return;
+            
+            const customers = await getAllCustomers();
+            const historyList = document.getElementById('historyList');
+            const totalCount = document.getElementById('totalCount');
+            
+            if (customers.length === 0) {
+                historyList.innerHTML = '<div style="color: rgba(0, 255, 200, 0.5); font-size: 11px; text-align: center; padding: 20px 0;">ABHI KOI NAHI</div>';
+                totalCount.textContent = '0';
+                return;
+            }
+            
+            customers.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+            
+            historyList.innerHTML = customers.map(c => `
+                <div class="history-item">
+                    <div>
+                        <div class="history-name">${c.name}</div>
+                        <div class="history-mobile">${c.mobile}</div>
+                        <div class="history-mobile" style="color:#00ff88;font-size:7px;">${c.modelName || ''} ${c.modelPrice ? '₹'+c.modelPrice.toLocaleString('en-IN') : ''}</div>
+                    </div>
+                    <div><span class="history-discount">₹${c.discount}</span></div>
+                </div>
+            `).join('');
+            
+            totalCount.textContent = customers.length;
+        }
+        
+        window.addEventListener('load', async () => {
+            await initDB();
+            init3D();
+        });
+    </script>
+</body>
+</html>
