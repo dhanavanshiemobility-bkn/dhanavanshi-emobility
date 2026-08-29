@@ -449,8 +449,8 @@
                     <option value="" style="background:#0a0e27;color:#00ffff;">-- MODEL CHUNO --</option>
                     <option value="single_light" data-price="50000" style="background:#0a0e27;color:#00ffff;">Single Light - ₹50,000</option>
                     <option value="dual_light" data-price="60000" style="background:#0a0e27;color:#00ffff;">Dual Light - ₹60,000</option>
-                    <option value="scooter" data-price="60000" style="background:#0a0e27;color:#00ffff;">Scooter - ₹60,000</option>
-                    <option value="activa" data-price="70000" style="background:#0a0e27;color:#00ffff;">Activa - ₹70,000</option>
+                    <option value="scooter" data-price="60000" style="background:#0a0e27;color:#00ffff;">E4 - ₹70,000</option>
+                    <option value="activa" data-price="70000" style="background:#0a0e27;color:#00ffff;">Activa - ₹75,000</option>
                 </select>
             </div>
             
